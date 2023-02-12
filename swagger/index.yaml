@@ -1,0 +1,49 @@
+---
+swagger: "2.0"
+info:
+  description: >
+    golang-skeleton is a golang REST application skeleton
+    The base path for all the APIs is "/api/v1".
+  title: golang-skeleton
+  version: 1.0.0
+tags:
+  - name: health
+    description: Check if golang-skeleton is healthy
+x-tagGroups:
+  - name: golang-skeleton Management
+    tags:
+      - app
+  - name: Health Check
+    tags:
+      - health
+consumes:
+- application/json
+produces:
+- application/json
+schemes:
+- http
+basePath: "/api/v1"
+paths:
+  /health:
+    $ref: ./health.yaml
+
+
+definitions:
+
+  # Health check
+  health:
+    type: object
+    properties:
+      status:
+        type: string
+
+  # Default Error
+  error:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        minLength: 1
+
