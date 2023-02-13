@@ -16,7 +16,7 @@ require (
 	github.com/phyber/negroni-gzip v1.0.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cast v1.5.0
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.1
 	github.com/urfave/negroni v1.0.0
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
 )
@@ -37,5 +37,5 @@ require (
 	go.mongodb.org/mongo-driver v1.8.3 // indirect
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
