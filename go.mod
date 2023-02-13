@@ -17,7 +17,7 @@ require (
 	github.com/phyber/negroni-gzip v1.0.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cast v1.5.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	github.com/urfave/negroni v1.0.0
 	golang.org/x/net v0.3.0
 	gorm.io/driver/mysql v1.4.6
