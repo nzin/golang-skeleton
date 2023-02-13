@@ -1,0 +1,77 @@
+get:
+  tags:
+    - app
+  summary: "App: Get Todo card"
+  operationId: getTodo
+  parameters:
+    - in: path
+      name: todoID
+      description: numeric ID of the todo to get
+      required: true
+      type: integer
+      format: int64
+      minimum: 1
+  responses:
+    200:
+      description: returns the todo
+      schema:
+        $ref: "#/definitions/todo"
+    default:
+      description: generic error response
+      schema:
+        $ref: "#/definitions/error"
+delete:
+  tags:
+    - app
+  summary: "App: Delete a todo"
+  operationId: deleteTodo
+  parameters:
+    - in: path
+      name: todoID
+      description: numeric ID of the todo
+      required: true
+      type: integer
+      format: int64
+      minimum: 1
+  responses:
+    200:
+      description: OK deleted
+    default:
+      description: generic error response
+      schema:
+        $ref: "#/definitions/error"
+put:
+  tags:
+    - app
+  summary: "App: Update a Todo information"
+  operationId: putTodo
+  parameters:
+    - in: path
+      name: todoID
+      description: numeric ID of the todo to get
+      required: true
+      type: integer
+      format: int64
+      minimum: 1
+    - in: body
+      name: body
+      description: update a todo
+      required: true
+      schema:
+        type: object
+        properties:
+          title:
+            description: todo title
+            type: string
+            minLength: 1
+          body:
+            description: todo body
+            type: string
+            minLength: 1
+  responses:
+    200:
+      description: OK updated
+    default:
+      description: generic error response
+      schema:
+        $ref: "#/definitions/error"

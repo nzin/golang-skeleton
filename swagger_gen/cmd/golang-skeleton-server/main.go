@@ -29,7 +29,7 @@ func main() {
 
 	parser := flags.NewParser(server, flags.Default)
 	parser.ShortDescription = "golang-skeleton"
-	parser.LongDescription = "golang-skeleton is a golang REST application skeleton The base path for all the APIs is \"/api/v1\".\n"
+	parser.LongDescription = "golang-skeleton is a skeleton application The base path for all the APIs is \"/api/v1\".\n"
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
 		_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)

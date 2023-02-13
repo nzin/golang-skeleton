@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: >
-    golang-skeleton is a golang REST application skeleton
+    golang-skeleton is a skeleton application
     The base path for all the APIs is "/api/v1".
   title: golang-skeleton
   version: 1.0.0
@@ -26,6 +26,10 @@ basePath: "/api/v1"
 paths:
   /health:
     $ref: ./health.yaml
+  /todos:
+    $ref: ./todos.yaml
+  /todos/{todoID}:
+    $ref: ./todo.yaml
 
 
 definitions:
@@ -36,6 +40,26 @@ definitions:
     properties:
       status:
         type: string
+
+  # Todo
+  todo:
+    type: object
+    required:
+      - title
+      - body
+    properties:
+      id:
+        type: integer
+        format: int64
+        minimum: 1
+        readOnly: true
+      title:
+        description: todo title
+        type: string
+        minLength: 1
+      body:
+        type: string
+        minLength: 1
 
   # Default Error
   error:

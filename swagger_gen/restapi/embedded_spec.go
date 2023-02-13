@@ -29,7 +29,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "golang-skeleton is a golang REST application skeleton The base path for all the APIs is \"/api/v1\".\n",
+    "description": "golang-skeleton is a skeleton application The base path for all the APIs is \"/api/v1\".\n",
     "title": "golang-skeleton",
     "version": "1.0.0"
   },
@@ -48,6 +48,200 @@ func init() {
             "schema": {
               "$ref": "#/definitions/health"
             }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/todos": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: List todos",
+        "operationId": "listTodos",
+        "responses": {
+          "200": {
+            "description": "list all todos",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "todos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/todo"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Create a todo",
+        "operationId": "createTodo",
+        "parameters": [
+          {
+            "description": "create a todo",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "description": "todo body",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "description": "todo title",
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the created todo",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "todoID": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/todos/{todoID}": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Get Todo card",
+        "operationId": "getTodo",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int64",
+            "description": "numeric ID of the todo to get",
+            "name": "todoID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the todo",
+            "schema": {
+              "$ref": "#/definitions/todo"
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Update a Todo information",
+        "operationId": "putTodo",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int64",
+            "description": "numeric ID of the todo to get",
+            "name": "todoID",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "update a todo",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "description": "todo body",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "description": "todo title",
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK updated"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Delete a todo",
+        "operationId": "deleteTodo",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int64",
+            "description": "numeric ID of the todo",
+            "name": "todoID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK deleted"
           },
           "default": {
             "description": "generic error response",
@@ -77,6 +271,30 @@ func init() {
       "properties": {
         "status": {
           "type": "string"
+        }
+      }
+    },
+    "todo": {
+      "type": "object",
+      "required": [
+        "title",
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "readOnly": true
+        },
+        "title": {
+          "description": "todo title",
+          "type": "string",
+          "minLength": 1
         }
       }
     }
@@ -114,7 +332,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "golang-skeleton is a golang REST application skeleton The base path for all the APIs is \"/api/v1\".\n",
+    "description": "golang-skeleton is a skeleton application The base path for all the APIs is \"/api/v1\".\n",
     "title": "golang-skeleton",
     "version": "1.0.0"
   },
@@ -133,6 +351,200 @@ func init() {
             "schema": {
               "$ref": "#/definitions/health"
             }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/todos": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: List todos",
+        "operationId": "listTodos",
+        "responses": {
+          "200": {
+            "description": "list all todos",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "todos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/todo"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Create a todo",
+        "operationId": "createTodo",
+        "parameters": [
+          {
+            "description": "create a todo",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "description": "todo body",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "description": "todo title",
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the created todo",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "todoID": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/todos/{todoID}": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Get Todo card",
+        "operationId": "getTodo",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int64",
+            "description": "numeric ID of the todo to get",
+            "name": "todoID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the todo",
+            "schema": {
+              "$ref": "#/definitions/todo"
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Update a Todo information",
+        "operationId": "putTodo",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int64",
+            "description": "numeric ID of the todo to get",
+            "name": "todoID",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "update a todo",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "description": "todo body",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "description": "todo title",
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK updated"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "app"
+        ],
+        "summary": "App: Delete a todo",
+        "operationId": "deleteTodo",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int64",
+            "description": "numeric ID of the todo",
+            "name": "todoID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK deleted"
           },
           "default": {
             "description": "generic error response",
@@ -162,6 +574,30 @@ func init() {
       "properties": {
         "status": {
           "type": "string"
+        }
+      }
+    },
+    "todo": {
+      "type": "object",
+      "required": [
+        "title",
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "readOnly": true
+        },
+        "title": {
+          "description": "todo title",
+          "type": "string",
+          "minLength": 1
         }
       }
     }

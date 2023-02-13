@@ -1,0 +1,54 @@
+get:
+  tags:
+    - app
+  summary: "App: List todos"
+  operationId: listTodos
+  responses:
+    200:
+      description: list all todos
+      schema:
+        type: object
+        properties:
+          todos:
+            type: array
+            items:
+              $ref: "#/definitions/todo"
+    default:
+      description: generic error response
+      schema:
+        $ref: "#/definitions/error"
+
+post:
+  tags:
+    - app
+  summary: "App: Create a todo"
+  operationId: createTodo
+  parameters:
+    - in: body
+      name: body
+      description: create a todo
+      required: true
+      schema:
+        type: object
+        properties:
+          title:
+            description: todo title
+            type: string
+            minLength: 1
+          body:
+            description: todo body
+            type: string
+            minLength: 1
+  responses:
+    200:
+      description: returns the created todo
+      schema:
+        type: object
+        properties:
+          todoID:
+            type: integer
+            format: int64
+    default:
+      description: generic error response
+      schema:
+        $ref: "#/definitions/error"

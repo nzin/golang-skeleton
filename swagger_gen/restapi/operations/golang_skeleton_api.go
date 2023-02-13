@@ -19,6 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"github.com/nzin/golang-skeleton/swagger_gen/restapi/operations/app"
 	"github.com/nzin/golang-skeleton/swagger_gen/restapi/operations/health"
 )
 
@@ -44,13 +45,28 @@ func NewGolangSkeletonAPI(spec *loads.Document) *GolangSkeletonAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		AppCreateTodoHandler: app.CreateTodoHandlerFunc(func(params app.CreateTodoParams) middleware.Responder {
+			return middleware.NotImplemented("operation app.CreateTodo has not yet been implemented")
+		}),
+		AppDeleteTodoHandler: app.DeleteTodoHandlerFunc(func(params app.DeleteTodoParams) middleware.Responder {
+			return middleware.NotImplemented("operation app.DeleteTodo has not yet been implemented")
+		}),
 		HealthGetHealthHandler: health.GetHealthHandlerFunc(func(params health.GetHealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.GetHealth has not yet been implemented")
+		}),
+		AppGetTodoHandler: app.GetTodoHandlerFunc(func(params app.GetTodoParams) middleware.Responder {
+			return middleware.NotImplemented("operation app.GetTodo has not yet been implemented")
+		}),
+		AppListTodosHandler: app.ListTodosHandlerFunc(func(params app.ListTodosParams) middleware.Responder {
+			return middleware.NotImplemented("operation app.ListTodos has not yet been implemented")
+		}),
+		AppPutTodoHandler: app.PutTodoHandlerFunc(func(params app.PutTodoParams) middleware.Responder {
+			return middleware.NotImplemented("operation app.PutTodo has not yet been implemented")
 		}),
 	}
 }
 
-/*GolangSkeletonAPI golang-skeleton is a golang REST application skeleton The base path for all the APIs is "/api/v1".
+/*GolangSkeletonAPI golang-skeleton is a skeleton application The base path for all the APIs is "/api/v1".
  */
 type GolangSkeletonAPI struct {
 	spec            *loads.Document
@@ -84,8 +100,18 @@ type GolangSkeletonAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// AppCreateTodoHandler sets the operation handler for the create todo operation
+	AppCreateTodoHandler app.CreateTodoHandler
+	// AppDeleteTodoHandler sets the operation handler for the delete todo operation
+	AppDeleteTodoHandler app.DeleteTodoHandler
 	// HealthGetHealthHandler sets the operation handler for the get health operation
 	HealthGetHealthHandler health.GetHealthHandler
+	// AppGetTodoHandler sets the operation handler for the get todo operation
+	AppGetTodoHandler app.GetTodoHandler
+	// AppListTodosHandler sets the operation handler for the list todos operation
+	AppListTodosHandler app.ListTodosHandler
+	// AppPutTodoHandler sets the operation handler for the put todo operation
+	AppPutTodoHandler app.PutTodoHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -163,8 +189,23 @@ func (o *GolangSkeletonAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.AppCreateTodoHandler == nil {
+		unregistered = append(unregistered, "app.CreateTodoHandler")
+	}
+	if o.AppDeleteTodoHandler == nil {
+		unregistered = append(unregistered, "app.DeleteTodoHandler")
+	}
 	if o.HealthGetHealthHandler == nil {
 		unregistered = append(unregistered, "health.GetHealthHandler")
+	}
+	if o.AppGetTodoHandler == nil {
+		unregistered = append(unregistered, "app.GetTodoHandler")
+	}
+	if o.AppListTodosHandler == nil {
+		unregistered = append(unregistered, "app.ListTodosHandler")
+	}
+	if o.AppPutTodoHandler == nil {
+		unregistered = append(unregistered, "app.PutTodoHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -254,10 +295,30 @@ func (o *GolangSkeletonAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/todos"] = app.NewCreateTodo(o.context, o.AppCreateTodoHandler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/todos/{todoID}"] = app.NewDeleteTodo(o.context, o.AppDeleteTodoHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/health"] = health.NewGetHealth(o.context, o.HealthGetHealthHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/todos/{todoID}"] = app.NewGetTodo(o.context, o.AppGetTodoHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/todos"] = app.NewListTodos(o.context, o.AppListTodosHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/todos/{todoID}"] = app.NewPutTodo(o.context, o.AppPutTodoHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

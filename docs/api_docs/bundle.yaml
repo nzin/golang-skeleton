@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   description: >
-    golang-skeleton is a golang REST application skeleton The base path for all
-    the APIs is "/api/v1".
+    golang-skeleton is a skeleton application The base path for all the APIs is
+    "/api/v1".
   title: golang-skeleton
   version: 1.0.0
 tags:
@@ -38,12 +38,162 @@ paths:
           description: generic error response
           schema:
             $ref: '#/definitions/error'
+  /todos:
+    get:
+      tags:
+        - app
+      summary: 'App: List todos'
+      operationId: listTodos
+      responses:
+        '200':
+          description: list all todos
+          schema:
+            type: object
+            properties:
+              todos:
+                type: array
+                items:
+                  $ref: '#/definitions/todo'
+        default:
+          description: generic error response
+          schema:
+            $ref: '#/definitions/error'
+    post:
+      tags:
+        - app
+      summary: 'App: Create a todo'
+      operationId: createTodo
+      parameters:
+        - in: body
+          name: body
+          description: create a todo
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                description: todo title
+                type: string
+                minLength: 1
+              body:
+                description: todo body
+                type: string
+                minLength: 1
+      responses:
+        '200':
+          description: returns the created todo
+          schema:
+            type: object
+            properties:
+              todoID:
+                type: integer
+                format: int64
+        default:
+          description: generic error response
+          schema:
+            $ref: '#/definitions/error'
+  /todos/{todoID}:
+    get:
+      tags:
+        - app
+      summary: 'App: Get Todo card'
+      operationId: getTodo
+      parameters:
+        - in: path
+          name: todoID
+          description: numeric ID of the todo to get
+          required: true
+          type: integer
+          format: int64
+          minimum: 1
+      responses:
+        '200':
+          description: returns the todo
+          schema:
+            $ref: '#/definitions/todo'
+        default:
+          description: generic error response
+          schema:
+            $ref: '#/definitions/error'
+    delete:
+      tags:
+        - app
+      summary: 'App: Delete a todo'
+      operationId: deleteTodo
+      parameters:
+        - in: path
+          name: todoID
+          description: numeric ID of the todo
+          required: true
+          type: integer
+          format: int64
+          minimum: 1
+      responses:
+        '200':
+          description: OK deleted
+        default:
+          description: generic error response
+          schema:
+            $ref: '#/definitions/error'
+    put:
+      tags:
+        - app
+      summary: 'App: Update a Todo information'
+      operationId: putTodo
+      parameters:
+        - in: path
+          name: todoID
+          description: numeric ID of the todo to get
+          required: true
+          type: integer
+          format: int64
+          minimum: 1
+        - in: body
+          name: body
+          description: update a todo
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                description: todo title
+                type: string
+                minLength: 1
+              body:
+                description: todo body
+                type: string
+                minLength: 1
+      responses:
+        '200':
+          description: OK updated
+        default:
+          description: generic error response
+          schema:
+            $ref: '#/definitions/error'
 definitions:
   health:
     type: object
     properties:
       status:
         type: string
+  todo:
+    type: object
+    required:
+      - title
+      - body
+    properties:
+      id:
+        type: integer
+        format: int64
+        minimum: 1
+        readOnly: true
+      title:
+        description: todo title
+        type: string
+        minLength: 1
+      body:
+        type: string
+        minLength: 1
   error:
     type: object
     required:

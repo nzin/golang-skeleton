@@ -2,7 +2,7 @@
 
 // Package restapi golang-skeleton
 //
-//  golang-skeleton is a golang REST application skeleton The base path for all the APIs is "/api/v1".
+//  golang-skeleton is a skeleton application The base path for all the APIs is "/api/v1".
 //
 //  Schemes:
 //    http
