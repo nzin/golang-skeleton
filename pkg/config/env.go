@@ -38,4 +38,6 @@ var Config = struct {
 	DBConnectionStr           string        `env:"GOLANG_SKELETON_DBCONNECTIONSTR" envDefault:"golang-skeleton.sqlite3"`
 	DBConnectionRetryAttempts uint          `env:"GOLANG_SKELETON_DBCONNECTION_RETRY_ATTEMPTS" envDefault:"9"`
 	DBConnectionRetryDelay    time.Duration `env:"GOLANG_SKELETON_DBCONNECTION_RETRY_DELAY" envDefault:"100ms"`
+
+	DatadogTraceEnabled bool `env:"GOLANG_SKELETON_DATADOG_TRACE_ENABLED" envDefault:"false"`
 }{}

@@ -7,12 +7,16 @@ import (
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/negroni"
+	negronitrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/urfave/negroni"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
 // ServerShutdown is a callback function that will be called when
 // we tear down the golang-skeleton server
 func ServerShutdown() {
-
+	if Config.DatadogTraceEnabled {
+		tracer.Stop()
+	}
 }
 
 // SetupGlobalMiddleware setup the global middleware
@@ -31,6 +35,11 @@ func SetupGlobalMiddleware(handler http.Handler) http.Handler {
 		}
 
 		n.Use(middleware)
+	}
+
+	if Config.DatadogTraceEnabled {
+		tracer.Start()
+		n.Use(negronitrace.Middleware(negronitrace.WithServiceName("appconfigr")))
 	}
 
 	n.Use(setupRecoveryMiddleware())

@@ -4,8 +4,10 @@ import (
 	"github.com/nzin/golang-skeleton/swagger_gen/models"
 	"github.com/nzin/golang-skeleton/swagger_gen/restapi/operations/app"
 	"github.com/nzin/golang-skeleton/swagger_gen/restapi/operations/health"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"gorm.io/gorm"
 
+	"github.com/nzin/golang-skeleton/pkg/config"
 	"github.com/nzin/golang-skeleton/pkg/handler/db"
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -87,6 +89,17 @@ func (c *crud) GetTodo(params app.GetTodoParams) middleware.Responder {
 }
 
 func (c *crud) UpdateTodo(params app.PutTodoParams) middleware.Responder {
+	
+	// example how to set more information into the current Datadog span
+	if config.Config.DatadogTraceEnabled {
+		ctx := params.HTTPRequest.Context()
+		if span, ok := tracer.SpanFromContext(ctx); ok {
+			span.SetTag("update.todoid", params.TodoID)
+			span.SetTag("update.title", params.Body.Title)
+			span.SetTag("update.body", params.Body.Body)
+		}
+	}
+
 	err := db.UpdateTodo(c.db, uint(params.TodoID), params.Body.Title, params.Body.Body)
 	if err != nil {
 		return app.NewPutTodoDefault(500).WithPayload(
