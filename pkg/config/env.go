@@ -40,4 +40,18 @@ var Config = struct {
 	DBConnectionRetryDelay    time.Duration `env:"GOLANG_SKELETON_DBCONNECTION_RETRY_DELAY" envDefault:"100ms"`
 
 	DatadogTraceEnabled bool `env:"GOLANG_SKELETON_DATADOG_TRACE_ENABLED" envDefault:"false"`
+
+	// CORSEnabled - enable CORS
+	CORSEnabled          bool     `env:"GOLANG_SKELETON_CORS_ENABLED" envDefault:"true"`
+	CORSAllowCredentials bool     `env:"GOLANG_SKELETON_CORS_ALLOW_CREDENTIALS" envDefault:"true"`
+	CORSAllowedHeaders   []string `env:"GOLANG_SKELETON_CORS_ALLOWED_HEADERS" envDefault:"Origin,Accept,Content-Type,X-Requested-With,Authorization,Time_Zone" envSeparator:","`
+	CORSAllowedMethods   []string `env:"GOLANG_SKELETON_CORS_ALLOWED_METHODS" envDefault:"GET,POST,PUT,DELETE,PATCH" envSeparator:","`
+	CORSAllowedOrigins   []string `env:"GOLANG_SKELETON_CORS_ALLOWED_ORIGINS" envDefault:"*" envSeparator:","`
+	CORSExposedHeaders   []string `env:"GOLANG_SKELETON_CORS_EXPOSED_HEADERS" envDefault:"WWW-Authenticate" envSeparator:","`
+
+	// WebPrefix - base path for web and API
+	// e.g. GOLANG_SKELETON_WEB_PREFIX=/foo
+	// UI path  => localhost:18000/foo"
+	// API path => localhost:18000/foo/api/v1"
+	WebPrefix string `env:"GOLANG_SKELETON_WEB_PREFIX" envDefault:""`
 }{}

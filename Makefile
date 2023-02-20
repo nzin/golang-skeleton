@@ -5,7 +5,7 @@ GOPATH := $(shell go env GOPATH)
 ### Public
 ################################
 
-all: deps gen build run
+all: deps gen build build_ui run
 
 rebuild: gen build
 
@@ -17,6 +17,13 @@ ci: test
 build:
 	@echo "Building golang-skeleton Server to $(PWD)/golang-skeleton ..."
 	@CGO_ENABLED=1 GO111MODULE=on go build -o ./golang-skeleton ./swagger_gen/cmd/golang-skeleton-server
+
+build_ui:
+	@echo "Building Golang-training UI ..."
+	@cd ./browser/golang-skeleton-ui/; npm install --legacy-peer-deps && npm run build
+
+run_ui:
+	@cd ./browser/golang-skeleton-ui/; npm run serve
 
 run:
 	@$(PWD)/golang-skeleton --port 18000
