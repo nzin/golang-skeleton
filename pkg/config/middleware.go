@@ -3,6 +3,8 @@ package config
 import (
 	"net/http"
 
+	sessions "github.com/goincremental/negroni-sessions"
+	"github.com/goincremental/negroni-sessions/cookiestore"
 	negronilogrus "github.com/meatballhat/negroni-logrus"
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/rs/cors"
@@ -51,6 +53,16 @@ func SetupGlobalMiddleware(handler http.Handler) http.Handler {
 			AllowedMethods:   Config.CORSAllowedMethods,
 			AllowCredentials: Config.CORSAllowCredentials,
 		}))
+	}
+
+	n.Use(sessions.Sessions("golang", cookiestore.New([]byte(Config.SessionNonce))))
+
+	if Config.OpenIDAuthEnabled {
+		m, err := setupKeycloakOpenidMiddleware()
+		if err != nil {
+			panic(err)
+		}
+		n.Use(m)
 	}
 
 	n.Use(&negroni.Static{

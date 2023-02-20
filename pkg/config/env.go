@@ -54,4 +54,14 @@ var Config = struct {
 	// UI path  => localhost:18000/foo"
 	// API path => localhost:18000/foo/api/v1"
 	WebPrefix string `env:"GOLANG_SKELETON_WEB_PREFIX" envDefault:""`
+
+	OpenIDAuthEnabled              bool     `env:"GOLANG_SKELETON_OPENID_AUTH_ENABLED" envDefault:"true"`
+	OpenIDClientID                 string   `env:"GOLANG_SKELETON_OPENID_CLIENT_ID"`
+	OpenIDClientSecret             string   `env:"GOLANG_SKELETON_OPENID_CLIENT_SECRET"`
+	OpenIDBaseURL                  string   `env:"GOLANG_SKELETON_OPENID_BASE_URL" envDefault:"http://localhost:18000"`
+	OpenIDIdp                      string   `env:"GOLANG_SKELETON_OPENID_IDP" envDefault:"http://localhost:8080"`
+	OpenIDAuthPrefixWhitelistPaths []string `env:"GOLANG_SKELETON_OPENID_AUTH_WHITELIST_PATHS" envDefault:"/api/v1/health,/error,/static,/favicon.png,/app.css" envSeparator:","`
+	OpenIDExternalIdp              string   `env:"GOLANG_SKELETON_OPENID_EXTERNAL_IDP" envDefault:""` // if needed (docker-compose) to redirect to keycloak differently
+
+	SessionNonce string `env:"GOLANG_SKELETON_SESSION_NONCE" envDefault:"CKjrfiQWjqewha"`
 }{}

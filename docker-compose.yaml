@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  postgres:
+      image: postgres
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: password
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:legacy
+      environment:
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_SCHEMA: public
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: Pa55w0rd
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+      ports:
+        - 8080:8080
+      depends_on:
+        - postgres
+
+  initkeycloak:
+    build:
+      context: initkeycloak
+    image: initkeycloak:${VERSION:-local}
+    environment:
+      - GOLANG_SKELETON_KEYCLOAK_USERNAME=admin
+      - GOLANG_SKELETON_KEYCLOAK_PASSWORD=Pa55w0rd
+      - GOLANG_SKELETON_KEYCLOAK_ADDRESS=http://keycloak:8080
+      - GOLANG_SKELETON_OPENID_CLIENT_ID=aclient
+      - GOLANG_SKELETON_OPENID_CLIENT_SECRET=asecret
+      - GOLANG_SKELETON_OPENID_CLIENT_URL=http://localhost:18000
+    depends_on:
+      keycloak:
+        condition: service_started
+
+  golang-challenge:
+    build:
+      context: .
+    image: golang-training:${VERSION:-local}
+    environment:
+     - GOLANG_SKELETON_OPENID_AUTH_ENABLED=true
+     - GOLANG_SKELETON_OPENID_CLIENT_ID=aclient
+     - GOLANG_SKELETON_OPENID_CLIENT_SECRET=asecret
+     - GOLANG_SKELETON_OPENID_BASE_URL=http://localhost:18000
+     - GOLANG_SKELETON_OPENID_IDP=http://keycloak:8080
+     - GOLANG_SKELETON_OPENID_EXTERNAL_IDP=http://localhost:8080
+    ports:
+     - 18000:18000
+    depends_on:
+      initkeycloak:
+        condition: service_completed_successfully
+
